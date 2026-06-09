@@ -1,0 +1,10 @@
+# Typst compilation output
+*.pdf
+*.aux
+
+# macOS
+.DS_Store
+
+# Editor directories
+.vscode/
+.idea/
