@@ -150,7 +150,7 @@
         align: (left + bottom, right + bottom),
         inset: (bottom: 5pt),
         stroke: (bottom: 0.5pt),
-        text(weight: "regular", header-left-text),
+        text(weight: "regular", section_title),
         image("figures/Logo.png", height: 16pt)
       )
     }
