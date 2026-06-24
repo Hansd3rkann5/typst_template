@@ -1,27 +1,23 @@
 #import "data.typ": glossary, symbols
-#import "config.typ": header-left-text
 #import "@preview/wordometer:0.1.4": total-words
 
-#let inwriting = true   // true  → #todo() annotations visible, word counts shown
-#let draft    = true    // must be true when inwriting is true
+#let inwriting = true
+#let draft = true
 
 #assert(not(inwriting and not(draft)), message: "If inwriting is true, draft should be true as well.")
 
 // --- HELPERS ---
 
-// Red draft annotation — invisible when inwriting = false
 #let todo(it) = [
   #if inwriting [
     #text(size: 0.8em)[#emoji.pencil] #text(it, fill: red, weight: 600)
   ]
 ]
 
-// Unnumbered heading that still appears in outline and bookmarks
 #let silentheading(level, body) = [
   #heading(outlined: false, level: level, numbering: none, bookmarked: true)[#body]
 ]
 
-// Small vertical gap with left-indent reset
 #let gap() = {
   v(0.5em)
   h(-1.8em)
@@ -29,8 +25,6 @@
 
 // --- EQUATIONS ---
 
-// Block equation with optional label and variable definition list
-// vars: array of (symbol, description) pairs — listed below the equation
 #let eq(body, label: none, vars: ()) = {
   block(width: 100%)[
     #math.equation(block: true, body)
@@ -52,23 +46,23 @@
 
 #let used-keys = state("used-keys", ())
 
-// Internal: register a key with its first-use heading location
+// Hilfsfunktion zur Registrierung (zentrale Logik für Kapitelzuordnung)
 #let register-key(k) = context {
   let history = used-keys.get()
   if not history.any(it => it.key == k) {
     let ch-num = counter(heading).get()
-    let ch-str = ch-num.map(str).join(".")
+    let ch-str = ch-num.map(str).join(".") 
     used-keys.update(h => h + ((key: k, ch: ch-str),))
   }
 }
 
-// #gl("key") — "Long Form (SHORT)" on first use, "SHORT" thereafter
+// 1. Hauptfunktion: Langform bei Erstnennung, sonst Kurzform
 #let gl(key) = context {
   let k = str(key)
   let entry = (glossary + symbols).find(e => str(e.key) == k)
-
-  if entry == none {
-    return text(red)["#k" is not defined in data.typ]
+  
+  if entry == none { 
+    return text(red)["#k" is not defined in data.typ] 
   }
 
   let history = used-keys.get()
@@ -82,7 +76,7 @@
   }
 }
 
-// #glh("key") — always SHORT, no registration (safe for headings; prevents TOC pre-trigger)
+// 2. Heading-Funktion: Immer Kurzform, keine Registrierung (verhindert TOC-Vortrigger)
 #let glh(key) = context {
   let k = str(key)
   let entry = (glossary + symbols).find(e => str(e.key) == k)
@@ -92,26 +86,26 @@
   entry.short
 }
 
-// #gls("key") — always SHORT, marks key as used (for use inside equations)
+// 3. Kurzform-Funktion: Immer nur Symbol/Kurzform (z. B. für Gleichungen)
 #let gls(key) = context {
   let k = str(key)
   let entry = (glossary + symbols).find(e => str(e.key) == k)
-
-  if entry == none {
-    return text(red)[short "#k" is not defined in data.typ]
+  
+  if entry == none { 
+    return text(red)[short "#k" is not defined in data.typ] 
   }
 
   register-key(k)
   entry.short
 }
 
-// #gll("key") — "lowercase long form (SHORT)" on first use, "SHORT" thereafter
+// 3. Lowercase-Funktion: Immer die kleingeschriebene Langform
 #let gll(key) = context {
   let k = str(key)
   let entry = (glossary + symbols).find(e => str(e.key) == k)
-
-  if entry == none {
-    return text(red)[lower for "#k" is not defined in data.typ]
+  
+  if entry == none { 
+    return text(red)[lower for "#k" is not defined in data.typ] 
   }
 
   let history = used-keys.get()
@@ -125,15 +119,15 @@
   }
 }
 
-// --- PAGE HEADER ---
+// --- HEADER & PAGE LAYOUT ---
 
-// Call once per chapter file via: #show: body => header("Chapter Title", body)
 #let header(section_title, body) = {
+  // Seiten-Konfiguration setzen
   set page(
     header: context {
       let all_headings = query(selector(heading.where(level: 1)))
       let target = all_headings.filter(h => h.location().page() <= here().page()).at(-1, default: none)
-
+      
       let display_title = if target != none {
         if target.numbering != none {
           let num = counter(heading).at(target.location()).at(0)
@@ -144,14 +138,14 @@
       } else {
         section_title
       }
-
+      
       grid(
         columns: (1fr, 1fr),
         align: (left + bottom, right + bottom),
         inset: (bottom: 5pt),
         stroke: (bottom: 0.5pt),
-        text(weight: "regular", section_title),
-        image("figures/Logo.png", height: 16pt)
+        text(weight: "regular", display_title),
+        image("figures/Logo.png", height: 16pt) 
       )
     }
   )
@@ -160,16 +154,15 @@
   if inwriting {
     v(1em)
     align(right)[
-      #text(fill: luma(160), size: 0.78em, style: "italic")[#section_title: #total-words words]
+      #text(fill: luma(160), size: .78em, style: "italic")[#section_title: #total-words words]
     ]
   }
 }
 
 // --- SI UNIT HELPER ---
 
-// #si(value, unit) — non-breaking value + unit pair
-// unit: string key from dict below, or any Typst math expression
 #let si(value, unit) = {
+  // Dictionary für gängige Einheiten (erweitert um deine Lab-Daten)
   let units = (
     rho: $g / (c m^3)$,
     deg: $degree$,
@@ -188,14 +181,40 @@
     "none": [$-$]
   )
 
+  // Prüfen, ob das Kürzel existiert, sonst die Eingabe direkt nutzen
   let final-unit = if type(unit) == str and unit in units {
     units.at(unit)
   } else {
     unit
   }
 
+  // Box verhindert Zeilenumbruch; h(0.1em) ist das schmale Leerzeichen
+  // Wir prüfen, ob value leer ist (für die Tabellenspalte), dann kein Space
   box([
     #if str(value).len() > 0 [$#value$#h(0.07em, weak: true)]
     #final-unit
   ])
+}
+
+// --- BIBLIOGRAPHY & APPENDIX HELPERS ---
+
+#let bib-appendix(path: "items.bib", style: "ieee") = context {
+  // Check if any sources were actually cited in the document
+  let citations = query(cite)
+  
+  if citations.len() > 0 {
+    // 1. Style: Shift the bracketed numbers [6] down
+    show bibliography: it => {
+      show regex("\[\d+\]"): set text(baseline: 0.15em)
+      it
+    }
+
+    // 2. Page Layout: Switch to Roman numbering for the appendix
+    set page(numbering: "I")
+    counter(page).update(1)
+
+    // 3. Render: Add a pagebreak and the bibliography
+    pagebreak(weak: true)
+    bibliography(path, style: style)
+  }
 }

@@ -1,12 +1,12 @@
 #import "utils.typ": inwriting, draft, todo, used-keys, gl
 #import "@preview/wordometer:0.1.4": word-count
 #import "glossary_func.typ": glossary, symbols
-#import "config.typ": *
+#import "config.typ": * // --- GLOBAL
 #import "data.typ": glossary, symbols
 
 
 // ─── GLOBAL TEXT & LIST SETTINGS ──────────────────────────────────────────────
-#set text(lang: "en", size: base-size, font: base-font)
+#set text(lang: if german { "de" } else { "en" }, size: base-size, font: "Noto Sans Indic Siyaq Numbers")
 #set text(ligatures: false)
 
 #set list(indent: list-indent, body-indent: list-body-indent, marker: n => context {
@@ -104,6 +104,7 @@
 // ║  FRONT MATTER  —  roman page numbering (I, II, III …)                     ║
 // ║  To reorder: cut and paste the numbered blocks below.                      ║
 // ║  Each block ends with #pagebreak() so they are self-contained.             ║
+// ║                                                                            ║
 // ╚═════════════════════════════════════════════════════════════════════════════╝
 #set page(numbering: "I")
 #counter(page).update(1)
@@ -151,35 +152,63 @@
 #pagebreak()
 
 // ─── FRONT · 4 · List of Abbreviations & Formula Symbols ─────────────────────
-// Uses used-keys.final() — Typst "did not converge" warning is expected and harmless.
+// Note: uses used-keys.final() — Typst "did not converge" warning is expected
+// and harmless; the output is correct.
 #include "glossary_func.typ"
 
 
-// ╔═════════════════════════════════════════════════════════════════════════════╗
-// ║  MAIN MATTER  —  arabic page numbering (1, 2, 3 …)                        ║
-// ╚═════════════════════════════════════════════════════════════════════════════╝
-#set page(numbering: "1")
+// ╔═════════════════════════════════════════════════════╗
+// ║  MAIN MATTER  —  arabic page numbering (1, 2, 3 …). ║
+// ╚═════════════════════════════════════════════════════╝
+#set page(
+  numbering: "1",
+  footer: context {
+    set text(size: footer-size, fill: luma(150))
+    grid(
+      columns: (1fr, 4em, auto),
+      align: (left + top, center + top, right + top),
+      inset: (top: 5pt),
+      stroke: (top: 0.5pt),
+      footer-text,
+      [],
+      text(fill: black, size: base-size, counter(page).display())
+    )
+  }
+)
 #counter(page).update(1)
 #set math.equation(numbering: "(1)")
 #set heading(numbering: "1.1")
 #set figure(numbering: "1")
 
 #show: word-count.with(exclude: (figure, figure.caption, raw, heading))
-#include "chapters/1_Introduction.typ"
-#include "chapters/2_Theoretical_Framework.typ"
-#include "chapters/3_Methodology.typ"
-#include "chapters/4_Results.typ"
-#include "chapters/5_Discussion.typ"
-#include "chapters/6_Conclusion.typ"
+#if german {
+  include "kapitel/1_Einleitung.typ"
+  include "kapitel/2_Theoretisches_Konzept.typ"
+  include "kapitel/3_Methodik.typ"
+  include "kapitel/4_Ergebnisse.typ"
+  include "kapitel/5_Diskussion.typ"
+  include "kapitel/6_Fazit.typ"
+} else {
+  include "chapters/1_Introduction.typ"
+  include "chapters/2_Theoretical_Concept.typ"
+  include "chapters/3_Methodology.typ"
+  include "chapters/4_Results.typ"
+  include "chapters/5_Discussion.typ"
+  include "chapters/6_Conclusion.typ"
+}
+
+// Archived exposé — uncomment to include:
+//#include "expose/1_ExposéV1.typ"
+//#include "expose/2_ExposéV2.typ"
+//#include "expose/3_Exposé_Feedback.typ"
 
 
-// ╔═════════════════════════════════════════════════════════════════════════════╗
-// ║  BACK MATTER                                                               ║
-// ║  To reorder: cut and paste the numbered blocks below.                      ║
-// ╚═════════════════════════════════════════════════════════════════════════════╝
+// ╔═══════════════════════════════════════════════════════╗
+// ║  BACK MATTER                                          ║
+// ║  To reorder: cut and paste the numbered blocks below. ║
+// ╚═══════════════════════════════════════════════════════╝
 
 // ─── BACK · 1 · Bibliography ──────────────────────────────────────────────────
-#set par(leading: 0.5em, first-line-indent: 0em, justify: true)
 #bibliography("items.bib", style: "apa")
 
 // ─── BACK · 2 · Appendix ──────────────────────────────────────────────────────

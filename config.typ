@@ -1,5 +1,8 @@
 // config.typ — change these values to configure the thesis
 
+// --- Language ---
+#let german = false  // true → German version (kapitel/), false → English (chapters/)
+
 // --- Cover Texts ---
 #let university = "University of Bayreuth"
 #let program-name = [M.Sc.: Your Program Name]
@@ -11,9 +14,9 @@
 // --- Authors and Supervision ---
 #let supervisor-name = "Lastname, Firstname"
 #let editors = (
-  "Firstname Lastname",
+  "Simon Bader",
 )
-#let matrikelnr = "0000000"
+#let matrikelnr = "2119890"
 
 // --- Page Header ---
 #let header-left-text = "Your Project / Module Name"  // left side of the running header
@@ -36,12 +39,12 @@
 #let stroke-thin = 0.2pt
 
 // --- Paragraph & List Layout ---
-#let par-leading = 0.8em       // line spacing
+#let par-leading = 0.8em // Line spacing
 #let par-indent = 0em
 #let par-spacing = 1.5em
 #let list-indent = 1em
 #let list-body-indent = 0.5em
-#let list-spacing-above = 1.5em
+#let list-spacing-above = 1.5em // Space between preceding text and a list/enum
 #let outline-indent = 2em
 
 // --- Heading Spacing ---
@@ -53,9 +56,10 @@
 #let h3-below = 1em
 
 // --- List of Figures / List of Tables Entry Spacing ---
-#let lof-entry-spacing = 0.55em  // vertical gap between entries
-#let lof-combined = false         // true  → LoF and LoT share one page
-                                  // false → each list on its own page
+#let lof-entry-spacing = 0.55em // vertical gap between entries in List of Figures and List of Tables
+#let lof-combined = true
+// true  → List of Figures and List of Tables share one page
+// false → each list starts on its own page
 
 // --- General Figure Spacing ---
 #let figure-spacing-above = 2em
@@ -64,7 +68,7 @@
 // --- Table & Glossary Settings ---
 #let table-spacing-above = 2em
 #let table-inset = 6.5pt
-#let caption-text-size = 10pt
+#let caption-text-size = 10pt  // font size for figure and table captions only
 #let glossary-inset = 0.6em
 #let glossary-text-size = 12pt
 #let symbol-text-size = 12pt
@@ -74,5 +78,8 @@
 #let col-symbols = (2.5cm, 1fr, 1.5cm, 2.5cm)
 
 // --- Colors & Dynamic Texts ---
-#let footer-text = report-title
+#let footer-text = report-title// + " - " + report-subject
 #let main-color-link = blue
+
+/*
+Font size: Text: 12 pt; Footnotes: 10 pt. Line spacing: Text: 1.5 lines (18 pt); Footnotes: 1 line. Page margins: left 3 cm; right 2 cm; top and bottom 2.5 cm. Headings: first outlinelevel: 13 pt, bold; following outline levels: 12 pt, bold.*/
