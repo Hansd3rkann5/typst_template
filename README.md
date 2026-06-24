@@ -5,8 +5,8 @@ A clean, structured Typst template for academic theses (M.Sc. / B.Sc.), designed
 ## Quick Start
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/typst-thesis-template.git my-thesis
-cd my-thesis
+git clone https://github.com/YOUR_USERNAME/typst_template.git "my-thesis"
+cd "my-thesis"
 ```
 
 Open `config.typ` and fill in your details, then compile with:
