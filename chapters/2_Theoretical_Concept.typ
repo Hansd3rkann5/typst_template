@@ -12,3 +12,6 @@
 == Concept B <sec:2_concept-b>
 
 #todo("Introduce the second concept. Explain how it relates to Concept A.")
+
+
+

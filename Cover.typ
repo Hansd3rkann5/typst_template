@@ -1,11 +1,12 @@
+// chapters/0_Cover.typ
 #import "config.typ": *
 
 #set page(margin: (x: 2.5cm, y: 2.5cm))
 
 #align(center)[
   #v(2em)
-  #image("figures/Logo.png", width: logo-width)
-
+  #image("figures/Logo_groß.png", width: logo-width) 
+  
   #v(3em)
   #text(size: cover-size-small)[#university] \
   #text(size: cover-size-small)[#program-name]
@@ -19,8 +20,8 @@
   #text(size: cover-size-medium, weight: "bold")[submitted on: #report-date]
 
   #v(7em)
-  #text(weight: "bold")[Supervisor:] \ #supervisor-name
-
+  #text(weight: "bold")[Supervisor:]\ #supervisor-name
+  
   #v(2em)
   #text(weight: "bold")[Editor:] \
   #editors.join([\ ]) \
