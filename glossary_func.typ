@@ -4,9 +4,12 @@
 
 #context {
   let used-info      = used-keys.final()
-  let used-keys-only = used-info.map(it => it.key)
-  let filtered-abbr    = glossary.filter(a => str(a.key) in used-keys-only)
-  let filtered-symbols = symbols.filter(s  => str(s.key)  in used-keys-only)
+  let filtered-abbr    = used-info
+    .map(it => glossary.find(a => str(a.key) == it.key))
+    .filter(a => a != none)
+  let filtered-symbols = used-info
+    .map(it => symbols.find(s => str(s.key) == it.key))
+    .filter(s => s != none)
 
   if filtered-abbr.len() > 0 {
     set text(size: glossary-text-size)
