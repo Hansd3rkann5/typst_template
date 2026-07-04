@@ -5,7 +5,7 @@ A clean, structured Typst template for academic theses (M.Sc. / B.Sc.), designed
 ## Quick Start
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/typst_template.git "my-thesis"
+git clone https://github.com/Hansd3rkann5/typst_template.git "my-thesis"
 cd "my-thesis"
 ```
 
@@ -45,14 +45,12 @@ Or use the [Typst VS Code extension](https://marketplace.visualstudio.com/items?
 
 1. **`config.typ`** — fill in `university`, `program-name`, `report-title`, `supervisor-name`, `editors`, `matrikelnr`
 2. **`config.typ` booleans** — review the four flags at the top of the file:
-
-   | Flag | Default | Effect |
-   |---|---|---|
-   | `german` | `false` | Switch to German chapter files (`kapitel/`) |
-   | `lof-combined` | `true` | Share one page for List of Figures and List of Tables |
-   | `chapter-pagebreak` | `false` | Force each level-1 heading onto a new page |
-   | `show-wordometer` | `false` | Show per-section word count when `draft = true` |
-
+   | Flag                  | Default   | Effect                                                |
+   | --------------------- | --------- | ----------------------------------------------------- |
+   | `german`            | `false` | Switch to German chapter files (`kapitel/`)         |
+   | `lof-combined`      | `true`  | Share one page for List of Figures and List of Tables |
+   | `chapter-pagebreak` | `false` | Force each level-1 heading onto a new page            |
+   | `show-wordometer`   | `false` | Show per-section word count when`draft = true`      |
 3. **`figures/`** — add `Logo.png` (used in the running page header) and `Logo_groß.png` (used on the cover); replace with your institution's logo
 4. **`data.typ`** — add your abbreviations and formula symbols
 5. **`items.bib`** — add BibTeX entries as you cite sources
@@ -64,15 +62,15 @@ Or use the [Typst VS Code extension](https://marketplace.visualstudio.com/items?
 
 Controlled entirely by the numbered blocks in `main.typ`. To reorder a section, cut and paste its block:
 
-| Block | Default position |
-|---|---|
-| FRONT · 1 · Table of Contents | Front matter |
-| FRONT · 2 · List of Figures | Front matter |
-| FRONT · 3 · List of Tables | Front matter |
-| FRONT · 4 · List of Abbreviations & Symbols | Front matter |
-| Chapters 1–6 | Main matter (arabic numbering) |
-| BACK · 1 · Bibliography | Back matter |
-| BACK · 2 · Appendix | Back matter |
+| Block                                         | Default position               |
+| --------------------------------------------- | ------------------------------ |
+| FRONT · 1 · Table of Contents               | Front matter                   |
+| FRONT · 2 · List of Figures                 | Front matter                   |
+| FRONT · 3 · List of Tables                  | Front matter                   |
+| FRONT · 4 · List of Abbreviations & Symbols | Front matter                   |
+| Chapters 1–6                                 | Main matter (arabic numbering) |
+| BACK · 1 · Bibliography                     | Back matter                    |
+| BACK · 2 · Appendix                         | Back matter                    |
 
 > **Note:** The List of Abbreviations & Symbols uses `state.final()` so it can appear in front matter. Typst will emit a *"did not converge within 5 attempts"* warning — this is expected and the output is correct.
 
@@ -86,15 +84,15 @@ Import what you need at the top of each chapter file:
 #import "../utils.typ": gap, eq, header, gl, gls, gll, glh, si, todo, silentheading
 ```
 
-| Function | Usage | Output |
-|---|---|---|
-| `#gl("key")` | Body text | Long Form (SHORT) → SHORT |
-| `#glh("key")` | **Headings only** | Always SHORT (no TOC side-effect) |
-| `#gls("key")` | Inside equations | Always SHORT |
-| `#gll("key")` | Mid-sentence, first intro | lowercase long form (SHORT) → SHORT |
-| `#eq($...$, label: <eq:N_name>)` | Block equation | Numbered equation |
-| `#si(8000, "kg")` | Value + unit | Non-breaking `8000 kg` |
-| `#todo("text")` | Draft notes | Red annotation (hidden when `inwriting = false`) |
+| Function                           | Usage                     | Output                                            |
+| ---------------------------------- | ------------------------- | ------------------------------------------------- |
+| `#gl("key")`                     | Body text                 | Long Form (SHORT) → SHORT                        |
+| `#glh("key")`                    | **Headings only**   | Always SHORT (no TOC side-effect)                 |
+| `#gls("key")`                    | Inside equations          | Always SHORT                                      |
+| `#gll("key")`                    | Mid-sentence, first intro | lowercase long form (SHORT) → SHORT              |
+| `#eq($...$, label: <eq:N_name>)` | Block equation            | Numbered equation                                 |
+| `#si(8000, "kg")`                | Value + unit              | Non-breaking`8000 kg`                           |
+| `#todo("text")`                  | Draft notes               | Red annotation (hidden when`inwriting = false`) |
 
 ### Why `#glh()` in headings?
 
