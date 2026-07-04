@@ -23,7 +23,7 @@ Or use the [Typst VS Code extension](https://marketplace.visualstudio.com/items?
 
 ```
 ├── main.typ              # Master document — document order is controlled here
-├── config.typ            # All settings: title, author, spacing, fonts, colours
+├── config.typ            # All settings: title, author, spacing, fonts, colours, booleans
 ├── data.typ              # Glossary entries (abbreviations) and formula symbols
 ├── utils.typ             # Helper functions: gl, eq, si, header, todo, …
 ├── glossary_func.typ     # Renders the List of Abbreviations and Formula Symbols
@@ -31,7 +31,7 @@ Or use the [Typst VS Code extension](https://marketplace.visualstudio.com/items?
 ├── items.bib             # BibTeX bibliography (APA v7)
 ├── chapters/
 │   ├── 1_Introduction.typ
-│   ├── 2_Theoretical_Framework.typ
+│   ├── 2_Theoretical_Concept.typ
 │   ├── 3_Methodology.typ
 │   ├── 4_Results.typ
 │   ├── 5_Discussion.typ
@@ -43,11 +43,20 @@ Or use the [Typst VS Code extension](https://marketplace.visualstudio.com/items?
 
 ## Setup Checklist
 
-1. **`config.typ`** — fill in `university`, `program-name`, `report-title`, `supervisor-name`, `editors`, `matrikelnr`, `header-left-text`
-2. **`figures/`** — add `Logo.png` (used in the running page header) and `Logo_groß.png` (used on the cover); replace with your institution's logo
-3. **`data.typ`** — add your abbreviations and formula symbols
-4. **`items.bib`** — add BibTeX entries as you cite sources
-5. **`utils.typ`** — set `inwriting = false` before final submission to hide `#todo()` annotations and word counts
+1. **`config.typ`** — fill in `university`, `program-name`, `report-title`, `supervisor-name`, `editors`, `matrikelnr`
+2. **`config.typ` booleans** — review the four flags at the top of the file:
+
+   | Flag | Default | Effect |
+   |---|---|---|
+   | `german` | `false` | Switch to German chapter files (`kapitel/`) |
+   | `lof-combined` | `true` | Share one page for List of Figures and List of Tables |
+   | `chapter-pagebreak` | `false` | Force each level-1 heading onto a new page |
+   | `show-wordometer` | `false` | Show per-section word count when `draft = true` |
+
+3. **`figures/`** — add `Logo.png` (used in the running page header) and `Logo_groß.png` (used on the cover); replace with your institution's logo
+4. **`data.typ`** — add your abbreviations and formula symbols
+5. **`items.bib`** — add BibTeX entries as you cite sources
+6. **`utils.typ`** — set `inwriting = false` before final submission to hide `#todo()` annotations
 
 ---
 

@@ -31,7 +31,7 @@
 #set par(leading: par-leading, first-line-indent: par-indent, justify: true, spacing: par-spacing)
 #set table(inset: table-inset, stroke: stroke-main + black)
 
-#show figure: set block(above: figure-spacing-above, below: figure-spacing-below)
+#show figure.where(kind: image): set figure(placement: auto)
 
 #show figure.caption: set text(size: caption-text-size)
 #show figure.caption: it => [
@@ -68,8 +68,7 @@
 #show heading.where(level: 3): set block(above: h3-above, below: h3-below)
 
 // Reference styling (APA v7 compatible)
-#let _ref-seen    = state("ref-seen", ())
-#let _has-bib-ref = state("has-bib-ref", false)
+#let _ref-seen = state("ref-seen", ())
 
 #show ref: it => {
   let k = str(it.target)
@@ -90,9 +89,7 @@
     }
   }
 
-  // Keys without ":" are bibliography citations — mark the state so the
-  // bibliography section knows to render itself (avoids query(cite) circular dep)
-  [#_has-bib-ref.update(true)#it]
+  it
 }
 #show link: set text(fill: main-color-link)
 
@@ -120,14 +117,10 @@
 )
 #pagebreak()
 
-// ─── FRONT · 2 · List of Figures  /  3 · List of Tables ─────────────────────
+// ─── FRONT · 2 · List of Figures ─────────────────────────────────────────────
 #context {
-  let images  = query(figure.where(kind: image))
-  let tables  = query(figure.where(kind: table))
-  let has-figures = images.len() > 0
-  let has-tables  = tables.len() > 0
-
-  if has-figures {
+  let images = query(figure.where(kind: image))
+  if images.len() > 0 {
     heading(numbering: none)[List of Figures]
     show outline.entry: it => {
       v(lof-entry-spacing, weak: false)
@@ -137,10 +130,14 @@
       )))
     }
     outline(title: none, target: figure.where(kind: image))
-    if lof-combined and has-tables { v(2em) } else { pagebreak() }
   }
+}
+#if lof-combined { v(2em) } else { pagebreak() }
 
-  if has-tables {
+// ─── FRONT · 3 · List of Tables ──────────────────────────────────────────────
+#context {
+  let tables = query(figure.where(kind: table))
+  if tables.len() > 0 {
     heading(numbering: none)[List of Tables]
     show outline.entry: it => {
       v(lof-entry-spacing, weak: false)
@@ -150,9 +147,9 @@
       )))
     }
     outline(title: none, target: figure.where(kind: table))
-    pagebreak()
   }
 }
+#pagebreak()
 
 // ─── FRONT · 4 · List of Abbreviations & Formula Symbols ─────────────────────
 // Note: uses used-keys.final() — Typst "did not converge" warning is expected
@@ -214,14 +211,18 @@
 
 // ─── BACK · 1 · Bibliography ──────────────────────────────────────────────────
 #context {
-  if _has-bib-ref.final() {
-    set page(numbering: "I", footer: context align(center, counter(page).display("I")))
-    pagebreak(weak: true)
-    counter(page).update(
-      counter(page).at(query(<front-matter-end>).last().location()).first() + 1
-    )
-    bibliography("items.bib", style: "apa")
-  }
+  set page(
+    numbering: "I",
+    footer: context {
+      set text(size: footer-size, fill: luma(150))
+      align(center, text(fill: black, size: base-size, counter(page).display("I")))
+    }
+  )
+  pagebreak(weak: true)
+  counter(page).update(
+    counter(page).at(query(<front-matter-end>).last().location()).first() + 1
+  )
+  bibliography("items.bib", style: "apa")
 }
 
 // ─── BACK · 2 · Appendix ──────────────────────────────────────────────────────

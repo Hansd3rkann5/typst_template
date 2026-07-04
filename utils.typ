@@ -1,4 +1,5 @@
 #import "data.typ": glossary, symbols
+#import "config.typ": chapter-pagebreak, show-wordometer
 #import "@preview/wordometer:0.1.4": total-words
 
 #let inwriting = true
@@ -151,7 +152,8 @@
   )
 
   body
-  if inwriting {
+  if chapter-pagebreak { pagebreak(weak: true) }
+  if inwriting and show-wordometer {
     v(1em)
     align(right)[
       #text(fill: luma(160), size: .78em, style: "italic")[#section_title: #total-words words]
@@ -178,6 +180,7 @@
     m3: $m^3$,
     N: [$N$],
     au: [a.u.],
+    t: [$t$],
     "none": [$-$]
   )
 
@@ -191,7 +194,7 @@
   // Box verhindert Zeilenumbruch; h(0.1em) ist das schmale Leerzeichen
   // Wir prüfen, ob value leer ist (für die Tabellenspalte), dann kein Space
   box([
-    #if str(value).len() > 0 [$#value$#h(0.07em, weak: true)]
+    #if str(value).len() > 0 [$#value$#h(0.12em, weak: true)]
     #final-unit
   ])
 }

@@ -1,7 +1,18 @@
 // config.typ — change these values to configure the thesis
 
-// --- Language ---
-#let german = false  // true → German version (kapitel/), false → English (chapters/)
+// --- Booleans ---
+#let german = false
+// true → German version (kapitel/)
+// false → English (chapters/)
+#let lof-combined = true
+// true  → List of Figures and List of Tables share one page
+// false → each list starts on its own page
+#let chapter-pagebreak = false
+// true  → each level-1 heading starts on a new page
+// false → chapters flow continuously
+#let show-wordometer = false
+// true  → show per-section word count in draft mode
+// false → hide word count even when draft = true
 
 // --- Cover Texts ---
 #let university = "University of Bayreuth"
@@ -17,9 +28,6 @@
   "Simon Bader",
 )
 #let matrikelnr = "2119890"
-
-// --- Page Header ---
-#let header-left-text = "Your Project / Module Name"  // left side of the running header
 
 // --- Cover Dimensions & Spacing ---
 #let cover-size-large = 22pt
@@ -57,9 +65,6 @@
 
 // --- List of Figures / List of Tables Entry Spacing ---
 #let lof-entry-spacing = 0.55em // vertical gap between entries in List of Figures and List of Tables
-#let lof-combined = true
-// true  → List of Figures and List of Tables share one page
-// false → each list starts on its own page
 
 // --- General Figure Spacing ---
 #let figure-spacing-above = 2em

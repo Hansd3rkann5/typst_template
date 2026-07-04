@@ -2,17 +2,15 @@
 #import "config.typ": glossary-text-size, symbol-text-size, glossary-inset, col-abbr, col-symbols, stroke-thick, stroke-thin, stroke-main
 #import "data.typ": glossary, symbols
 
+// --- ABBREVIATIONS TABLE ---
 #context {
-  let used-info      = used-keys.final()
-  let filtered-abbr    = used-info
+  set text(size: glossary-text-size)
+  let used-info = used-keys.final()
+  let filtered-abbr = used-info
     .map(it => glossary.find(a => str(a.key) == it.key))
     .filter(a => a != none)
-  let filtered-symbols = used-info
-    .map(it => symbols.find(s => str(s.key) == it.key))
-    .filter(s => s != none)
 
   if filtered-abbr.len() > 0 {
-    set text(size: glossary-text-size)
     heading(numbering: none)[List of abbreviations]
     table(
       columns: col-abbr, stroke: none, inset: glossary-inset,
@@ -27,12 +25,20 @@
       )).flatten(),
       table.hline(stroke: stroke-thick),
     )
-    if filtered-symbols.len() > 0 { pagebreak() }
   }
+}
+#pagebreak()
+
+// --- FORMULA SYMBOLS ---
+#v(1cm)
+#context {
+  set text(size: symbol-text-size)
+  let used-info = used-keys.final()
+  let filtered-symbols = used-info
+    .map(it => symbols.find(s => str(s.key) == it.key))
+    .filter(s => s != none)
 
   if filtered-symbols.len() > 0 {
-    set text(size: symbol-text-size)
-    v(1cm)
     heading(numbering: none)[Formula Symbols]
     table(
       columns: col-symbols,
