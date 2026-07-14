@@ -31,7 +31,8 @@
 #set par(leading: par-leading, first-line-indent: par-indent, justify: true, spacing: par-spacing)
 #set table(inset: table-inset, stroke: stroke-main + black)
 
-#show figure.where(kind: image): set figure(placement: auto)
+#show figure.where(kind: image): set figure(placement: none)
+#show figure.where(kind: table): set figure(placement: none)
 
 #show figure.caption: set text(size: caption-text-size)
 #show figure.caption: it => [

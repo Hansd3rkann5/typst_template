@@ -3,6 +3,5 @@
 #let section = "Conclusion"
 #show: body => header(section, body)
 
-= Conclusion <sec:6_conclusion>
+= #section <sec:6_conclusion>
 
-#todo("Summarise the key findings, answer the research question directly, and outline directions for future research.")
