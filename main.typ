@@ -131,9 +131,9 @@
       )))
     }
     outline(title: none, target: figure.where(kind: image))
+    if lof-combined { v(2em) } else { pagebreak() }
   }
 }
-#if lof-combined { v(2em) } else { pagebreak() }
 
 // ─── FRONT · 3 · List of Tables ──────────────────────────────────────────────
 #context {
@@ -148,9 +148,9 @@
       )))
     }
     outline(title: none, target: figure.where(kind: table))
+    pagebreak()
   }
 }
-#pagebreak()
 
 // ─── FRONT · 4 · List of Abbreviations & Formula Symbols ─────────────────────
 // Note: uses used-keys.final() — Typst "did not converge" warning is expected

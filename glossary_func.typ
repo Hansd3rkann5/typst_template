@@ -25,12 +25,11 @@
       )).flatten(),
       table.hline(stroke: stroke-thick),
     )
+    pagebreak()
   }
 }
-#pagebreak()
 
 // --- FORMULA SYMBOLS ---
-#v(1cm)
 #context {
   set text(size: symbol-text-size)
   let used-info = used-keys.final()
@@ -39,6 +38,7 @@
     .filter(s => s != none)
 
   if filtered-symbols.len() > 0 {
+    v(1cm)
     heading(numbering: none)[Formula Symbols]
     table(
       columns: col-symbols,
